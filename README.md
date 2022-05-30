@@ -47,3 +47,13 @@ class ExtraWebSocket {
   removeEventListener(event: 'open', listener: (event: OpenEvent) => void): void
 }
 ```
+
+### autoReconnect
+```ts
+function autoReconnect(ws: ExtraWebSocket, timeout?: number): () => void
+```
+
+### startHeartbeat
+```ts
+function startHeartbeat(ws: ExtraWebSocket, interval: number): () => void
+```
