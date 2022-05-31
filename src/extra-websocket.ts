@@ -30,10 +30,10 @@ export class ExtraWebSocket {
   getState(): State {
     if (this.instance) {
       switch (this.instance.readyState) {
-        case 0: return State.Connecting
-        case 1: return State.Connected
-        case 2: return State.Closing
-        case 3: return State.Closed
+        case WebSocket.CONNECTING: return State.Connecting
+        case WebSocket.OPEN: return State.Connected
+        case WebSocket.CLOSING: return State.Closing
+        case WebSocket.CLOSED: return State.Closed
         default: throw new Error('Unknown state')
       }
     } else {
