@@ -1,4 +1,4 @@
-import {
+import type {
   WebSocket
 , Event as OpenEvent
 , MessageEvent
@@ -20,6 +20,13 @@ export enum State {
 , Closing
 }
 
+enum ReadyState {
+  CONNECTING = 0
+, OPEN = 1
+, CLOSING = 2
+, CLOSED = 3
+}
+
 export class ExtraWebSocket {
   private instance?: WebSocket
   private eventListeners: Map<string, Set<Function>> = new Map()
@@ -30,10 +37,10 @@ export class ExtraWebSocket {
   getState(): State {
     if (this.instance) {
       switch (this.instance.readyState) {
-        case WebSocket.CONNECTING: return State.Connecting
-        case WebSocket.OPEN: return State.Connected
-        case WebSocket.CLOSING: return State.Closing
-        case WebSocket.CLOSED: return State.Closed
+        case ReadyState.CONNECTING: return State.Connecting
+        case ReadyState.OPEN: return State.Connected
+        case ReadyState.CLOSING: return State.Closing
+        case ReadyState.CLOSED: return State.Closed
         default: throw new Error('Unknown state')
       }
     } else {
