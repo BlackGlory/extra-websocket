@@ -10,8 +10,8 @@ export function startHeartbeat(ws: ExtraWebSocket, interval: number): () => void
       } else {
         await new Promise<void>(resolve => {
           ws.addEventListener('open', function openListener() {
-            resolve()
             ws.removeEventListener('open', openListener)
+            resolve()
           })
         })
       }

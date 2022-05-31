@@ -6,6 +6,7 @@ import type {
 , CloseEvent
 } from 'ws'
 import { assert } from '@blackglory/prelude'
+import { Queue } from '@blackglory/structures'
 
 export enum BinaryType {
   NodeBuffer
@@ -29,8 +30,9 @@ enum ReadyState {
 
 export class ExtraWebSocket {
   private instance?: WebSocket
-  private eventListeners: Map<string, Set<Function>> = new Map()
-  private binaryType: BinaryType = BinaryType.NodeBuffer
+  private eventListeners = new Map<string, Set<Function>>()
+  private binaryType = BinaryType.NodeBuffer
+  protected unsentMessages = new Queue<unknown>()
 
   constructor(private createWebSocket: () => WebSocket) {}
 
@@ -106,40 +108,45 @@ export class ExtraWebSocket {
 
   connect(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      assert(
-        this.getState() === State.Closing ||
-        this.getState() === State.Closed
-      , 'WebSocket is not closing or closed'
-      )
+      assert(this.getState() === State.Closed, 'WebSocket is not closed')
 
-      const ws = this.createWebSocket()
-      ws.addEventListener('error', errorListener)
-      ws.addEventListener('open', () => {
-        this.instance?.removeEventListener('error', errorListener)
-        resolve()
-      })
+      const self = this
+      const ws = this.instance = this.createWebSocket()
 
+      ws.addEventListener('error', errorListener, { once: true })
       for (const [event, listeners] of this.eventListeners) {
         for (const listener of listeners) {
           ws.addEventListener(event as any, listener as any)
         }
       }
 
-      this.instance = ws
       this.setBinaryType(this.binaryType)
 
+      ws.addEventListener('open', openListener, { once: true })
+
       function errorListener(err: ErrorEvent) {
+        ws.removeEventListener('open', openListener)
         reject(err.error)
+      }
+
+      async function openListener(event: OpenEvent) {
+        ws.removeEventListener('error', errorListener)
+        for (let size = self.unsentMessages.size; size--;) {
+          self.send(self.unsentMessages.dequeue())
+        }
+        resolve()
       }
     })
   }
 
   close(code?: number, reason?: string): Promise<void> {
-    return new Promise<void>(resolve => {
+    return new Promise(resolve => {
       assert(this.instance, 'WebSocket is not created')
 
       switch (this.getState()) {
-        case State.Closed: return resolve()
+        case State.Closed:
+          resolve()
+          break
         case State.Closing:
           this.instance.addEventListener('close', () => resolve(), { once: true })
           break
@@ -151,9 +158,11 @@ export class ExtraWebSocket {
   }
 
   send(data: unknown): void {
-    assert(this.instance, 'WebSocket is not created')
+    this.unsentMessages.enqueue(data)
 
-    this.instance.send(data)
+    if (this.getState() === State.Connected) {
+      this.instance!.send(data, () => this.unsentMessages.dequeue())
+    }
   }
 
   ping(): void {
