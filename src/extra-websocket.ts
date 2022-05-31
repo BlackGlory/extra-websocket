@@ -129,7 +129,7 @@ export class ExtraWebSocket {
         reject(err.error)
       }
 
-      async function openListener(event: OpenEvent) {
+      function openListener(event: OpenEvent) {
         ws.removeEventListener('error', errorListener)
         for (let size = self.unsentMessages.size; size--;) {
           self.send(self.unsentMessages.dequeue())
