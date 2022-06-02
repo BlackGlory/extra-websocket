@@ -1,9 +1,12 @@
 import { ExtraWebSocket } from '@src/extra-websocket'
 import { delay } from 'extra-promise'
-import { pass, isntUndefined } from '@blackglory/prelude'
+import { pass } from '@blackglory/prelude'
 import { AbortController } from 'extra-abort'
 
-export function autoReconnect(ws: ExtraWebSocket, timeout?: number): () => void {
+export function autoReconnect(
+  ws: ExtraWebSocket
+, timeout: number = 0
+): () => void {
   const controller = new AbortController()
 
   // Make sure the error listener is added, prevent crashes due to uncaught errors.
@@ -20,13 +23,23 @@ export function autoReconnect(ws: ExtraWebSocket, timeout?: number): () => void 
   }
 
   async function listener(): Promise<void> {
-    if (controller.signal.aborted) return
+    ws.removeEventListener('close', listener)
 
-    if (isntUndefined(timeout)) {
+    while (true) {
+      if (controller.signal.aborted) return
+
       await delay(timeout)
       if (controller.signal.aborted) return
-    }
 
-    await ws.connect()
+      try {
+        await ws.connect()
+        if (controller.signal.aborted) return
+
+        ws.addEventListener('close', listener)
+        break
+      } catch {
+        pass()
+      }
+    }
   }
 }
