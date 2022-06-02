@@ -128,12 +128,27 @@ describe('ExtraWebsocket', () => {
     })
   })
 
-  test('bad connection', async () => {
-    const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
+  describe('bad connection', () => {
+    test('server is not open', async () => {
+      const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
 
-    const err = await getErrorPromise(ws.connect())
+      const err = await getErrorPromise(ws.connect())
 
-    expect(err?.message).toBe('connect ECONNREFUSED 127.0.0.1:8080')
+      expect(err?.message).toBe('connect ECONNREFUSED 127.0.0.1:8080')
+    })
+
+    test('server down', async () => {
+      const server = new Server({ port: 8080 })
+
+      const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
+      try {
+        await ws.connect()
+        server.close()
+      } finally {
+        await ws.close()
+        server.close()
+      }
+    })
   })
 })
 
