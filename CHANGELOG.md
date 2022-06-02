@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/BlackGlory/extra-websocket/compare/v0.2.2...v0.2.3) (2022-06-02)
+
+
+### Bug Fixes
+
+* **autoReonnect:** remove the close event listener before reconnection ([215df18](https://github.com/BlackGlory/extra-websocket/commit/215df188257f7a7ef9f12b200325826141dffc97))
+
 ### [0.2.2](https://github.com/BlackGlory/extra-websocket/compare/v0.2.1...v0.2.2) (2022-06-02)
 
 
