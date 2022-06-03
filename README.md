@@ -53,6 +53,19 @@ class ExtraWebSocket {
 function autoReconnect(ws: ExtraWebSocket, timeout?: number): () => void
 ```
 
+### autoReconnectWithExponentialBackOff
+```ts
+function autoReonnectWithExponentialBackOff(
+  ws: ExtraWebSocket
+, options: {
+    baseTimeout: number
+    maxTimeout?: number
+    factor?: number = 2
+    jitter?: boolean = true
+  }
+): () => void
+```
+
 ### startHeartbeat
 ```ts
 function startHeartbeat(ws: ExtraWebSocket, interval: number): () => void

@@ -1,9 +1,9 @@
 import { WebSocket, Server } from 'ws'
-import { autoReconnect } from '@utils/auto-reconnect'
+import { autoReconnectWithExponentialBackOff } from '@utils/auto-reconnect-with-exponential-back-off'
 import { ExtraWebSocket, State } from '@src/extra-websocket'
 import { delay } from 'extra-promise'
 
-describe('autoReconnect', () => {
+describe('autoReconnectWithExponentialBackOff', () => {
   test('reconnect', async () => {
     const server = new Server({ port: 8080 })
     server.on('connection', socket => {
@@ -11,7 +11,7 @@ describe('autoReconnect', () => {
     })
 
     const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
-    const cancel = autoReconnect(ws, 0)
+    const cancel = autoReconnectWithExponentialBackOff (ws, { baseTimeout: 0 })
     try {
       await ws.connect()
       ws.send('foo')
@@ -33,7 +33,7 @@ describe('autoReconnect', () => {
     })
 
     const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
-    const cancel = autoReconnect(ws, 2000)
+    const cancel = autoReconnectWithExponentialBackOff(ws, { baseTimeout: 2000 })
     try {
       await ws.connect()
       ws.send('foo')
@@ -58,7 +58,7 @@ describe('autoReconnect', () => {
     })
 
     const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
-    const cancel = autoReconnect(ws, 1000)
+    const cancel = autoReconnectWithExponentialBackOff(ws, { baseTimeout: 1000 })
     try {
       await ws.connect()
       cancel()

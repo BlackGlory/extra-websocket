@@ -1,12 +1,22 @@
 import { ExtraWebSocket, State } from '@src/extra-websocket'
-import { delay } from 'extra-promise'
+import { calculateExponentialBackoffTimeout } from 'extra-timers'
 import { pass } from '@blackglory/prelude'
-import { AbortController } from 'extra-abort'
+import { delay } from 'extra-promise'
 import { waitForFunction } from '@blackglory/wait-for'
 
-export function autoReconnect(
+export function autoReconnectWithExponentialBackOff(
   ws: ExtraWebSocket
-, timeout: number = 0
+, {
+    baseTimeout
+  , maxTimeout = Infinity
+  , factor = 2
+  , jitter = true
+  }: {
+    baseTimeout: number
+    maxTimeout?: number
+    factor?: number
+    jitter?: boolean
+  }
 ): () => void {
   const controller = new AbortController()
 
@@ -26,10 +36,17 @@ export function autoReconnect(
   async function listener(): Promise<void> {
     ws.removeEventListener('close', listener)
 
+    let retries = 0
     while (true) {
       if (controller.signal.aborted) return
 
-      await delay(timeout)
+      await delay(calculateExponentialBackoffTimeout({
+        retries
+      , baseTimeout
+      , maxTimeout
+      , factor
+      , jitter
+      }))
       if (controller.signal.aborted) return
 
       try {
@@ -40,6 +57,7 @@ export function autoReconnect(
         ws.addEventListener('close', listener)
         break
       } catch {
+        retries++
         pass()
       }
     }

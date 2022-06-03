@@ -7,9 +7,9 @@ describe('startHeartbeat', () => {
   test('heartbeat', async () => {
     const server = new Server({ port: 8080 })
     const pingListener = jest.fn()
-    server.on('connection', socket => 
+    server.on('connection', socket => {
       socket.on('ping', pingListener)
-    )
+    })
 
     const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
     const cancel = startHeartbeat(ws, 0)
@@ -28,9 +28,9 @@ describe('startHeartbeat', () => {
   test('interval', async () => {
     const server = new Server({ port: 8080 })
     const pingListener = jest.fn()
-    server.on('connection', socket => 
+    server.on('connection', socket => {
       socket.on('ping', pingListener)
-    )
+    })
 
     const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
     const cancel = startHeartbeat(ws, 1000)
@@ -53,9 +53,9 @@ describe('startHeartbeat', () => {
   test('cancel', async () => {
     const server = new Server({ port: 8080 })
     const pingListener = jest.fn()
-    server.on('connection', socket => 
+    server.on('connection', socket => {
       socket.on('ping', pingListener)
-    )
+    })
 
     const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
     const cancel = startHeartbeat(ws, 1000)
