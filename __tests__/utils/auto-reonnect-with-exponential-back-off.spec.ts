@@ -11,7 +11,10 @@ describe('autoReconnectWithExponentialBackOff', () => {
     })
 
     const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
-    const cancel = autoReconnectWithExponentialBackOff (ws, { baseTimeout: 0 })
+    const cancel = autoReconnectWithExponentialBackOff (ws, {
+      baseTimeout: 0
+    , jitter: false
+    })
     try {
       await ws.connect()
       ws.send('foo')
@@ -33,7 +36,10 @@ describe('autoReconnectWithExponentialBackOff', () => {
     })
 
     const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
-    const cancel = autoReconnectWithExponentialBackOff(ws, { baseTimeout: 2000 })
+    const cancel = autoReconnectWithExponentialBackOff(ws, {
+      baseTimeout: 2000
+    , jitter: false
+    })
     try {
       await ws.connect()
       ws.send('foo')
@@ -58,7 +64,10 @@ describe('autoReconnectWithExponentialBackOff', () => {
     })
 
     const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
-    const cancel = autoReconnectWithExponentialBackOff(ws, { baseTimeout: 1000 })
+    const cancel = autoReconnectWithExponentialBackOff(ws, {
+      baseTimeout: 1000
+    , jitter: false
+    })
     try {
       await ws.connect()
       cancel()
