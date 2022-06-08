@@ -1,7 +1,8 @@
 import { ExtraWebSocket, State } from '@src/extra-websocket'
-import { WebSocket, Server, Data } from 'ws'
+import { WebSocket, MessageEvent, Server } from 'ws'
 import { delay } from 'extra-promise'
 import { getErrorPromise } from 'return-style'
+import { waitForEmitter } from '@blackglory/wait-for'
 
 describe('ExtraWebsocket', () => {
   test('initial state is CLOSED', () => {
@@ -92,9 +93,10 @@ describe('ExtraWebsocket', () => {
 
     const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
     try {
-      const promise = waitForMessage(ws)
+      const promise = waitForEmitter(ws, 'message')
       await ws.connect()
-      const message = await promise
+      const [event] = await promise
+      const message = (event as MessageEvent).data
 
       expect(message).toBe('foo')
     } finally {
@@ -113,7 +115,7 @@ describe('ExtraWebsocket', () => {
       const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
       try {
         const messageListener = jest.fn()
-        ws.addEventListener('message', messageListener)
+        ws.on('message', messageListener)
         await ws.connect()
 
         await ws.close()
@@ -151,12 +153,3 @@ describe('ExtraWebsocket', () => {
     })
   })
 })
-
-function waitForMessage(ws: ExtraWebSocket): Promise<Data> {
-  return new Promise(resolve => {
-    ws.addEventListener('message', function listener(event) {
-      resolve(event.data)
-      ws.removeEventListener('message', listener)
-    })
-  })
-} 

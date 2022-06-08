@@ -1,5 +1,6 @@
 import { setDynamicTimeoutLoop } from 'extra-timers'
 import { ExtraWebSocket, State } from '@src/extra-websocket'
+import { waitForEmitter } from '@blackglory/wait-for'
 
 export function startHeartbeat(ws: ExtraWebSocket, interval: number): () => void {
   return setDynamicTimeoutLoop(
@@ -8,12 +9,7 @@ export function startHeartbeat(ws: ExtraWebSocket, interval: number): () => void
       if (ws.getState() === State.Connected) {
         ws.ping()
       } else {
-        await new Promise<void>(resolve => {
-          ws.addEventListener('open', function openListener() {
-            ws.removeEventListener('open', openListener)
-            resolve()
-          })
-        })
+        await waitForEmitter(ws, 'open')
       }
     }
   )

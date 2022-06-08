@@ -10,6 +10,7 @@ yarn add extra-websocket
 ### ExtraWebSocket
 ```ts
 import { WebSocket, Event as OpenEvent, MessageEvent, ErrorEvent, CloseEvent } from 'ws'
+import { Emitter } from '@blackglory/structures'
 
 enum BinaryType {
   NodeBuffer
@@ -24,7 +25,12 @@ enum State {
 , Closing
 }
 
-class ExtraWebSocket {
+class ExtraWebSocket extends Emitter<{
+  open: [event: OpenEvent]
+  message: [event: MessageEvent]
+  error: [event: ErrorEvent]
+  close: [event: CloseEvent]
+}> {
   constructor(createWebSocket: () => WebSocket)
 
   getState(): State
@@ -35,16 +41,6 @@ class ExtraWebSocket {
   close(code?: number, reason?: string): Promise<void>
   send(data: unknown): void
   ping(): void
-
-  addEventListener(event: 'message', listener: (event: MessageEvent) => void): void
-  addEventListener(event: 'close', listener: (event: CloseEvent) => void): void
-  addEventListener(event: 'error', listener: (event: ErrorEvent) => void): void
-  addEventListener(event: 'open', listener: (event: OpenEvent) => void): void
-
-  removeEventListener(event: 'message', listener: (event: MessageEvent) => void): void
-  removeEventListener(event: 'close', listener: (event: CloseEvent) => void): void
-  removeEventListener(event: 'error', listener: (event: ErrorEvent) => void): void
-  removeEventListener(event: 'open', listener: (event: OpenEvent) => void): void
 }
 ```
 

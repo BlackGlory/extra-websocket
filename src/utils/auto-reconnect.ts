@@ -11,21 +11,15 @@ export function autoReconnect(
   const controller = new AbortController()
 
   // Make sure the error listener is added, prevent crashes due to uncaught errors.
-  ws.addEventListener('error', ignore)
-  ws.addEventListener('close', listener)
+  const removeErrorListener = ws.on('error', pass)
+  let removeCloseListener = ws.once('close', listener)
   return () => {
     controller.abort()
-    ws.removeEventListener('close', listener)
-    ws.removeEventListener('error', ignore)
-  }
-
-  function ignore() {
-    pass()
+    removeCloseListener()
+    removeErrorListener()
   }
 
   async function listener(): Promise<void> {
-    ws.removeEventListener('close', listener)
-
     while (true) {
       if (controller.signal.aborted) return
 
@@ -37,7 +31,7 @@ export function autoReconnect(
         await ws.connect()
         if (controller.signal.aborted) return
 
-        ws.addEventListener('close', listener)
+        removeCloseListener = ws.once('close', listener)
         break
       } catch {
         pass()
