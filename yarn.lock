@@ -614,19 +614,6 @@
     iterable-operator "^1.0.1"
     justypes "^2.0.0"
 
-"@blackglory/structures@^0.3.5":
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/@blackglory/structures/-/structures-0.3.7.tgz#65979457438409819f6f0c3f31ccda8bde225ed6"
-  integrity sha512-CCixmJ5XvFYwk7SgMu7kbIYBzywmCW/SqZnqYuMip3ISrWZ7+DI7ahjZjgOs/M7xe6MFj3NJoKkzAdoXy2LANg==
-  dependencies:
-    "@blackglory/errors" "^2.2.1"
-    "@blackglory/types" "^1.1.0"
-    extra-promise "^1.0.2"
-    extra-timers "^0.2.5"
-    iterable-operator "^1.1.0"
-    justypes "^2.0.0"
-    rxjs "^7.5.5"
-
 "@blackglory/structures@^0.5.1":
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/@blackglory/structures/-/structures-0.5.1.tgz#c844f522fddad2362b59c9af1adb87b5511e5886"
@@ -659,7 +646,7 @@
     justypes "^0.1.6"
     lodash.isplainobject "^4.0.6"
 
-"@blackglory/types@^1.0.0", "@blackglory/types@^1.0.1", "@blackglory/types@^1.1.0":
+"@blackglory/types@^1.0.0", "@blackglory/types@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@blackglory/types/-/types-1.1.0.tgz#fa618e2289054b0d870b9e543a2b201eae81c3c0"
   integrity sha512-bSdRnP99H53WV2PR+P9Wc52hedIZPaHX2s+/J5112vcoXHoo19brxGu6XiAc5wnf4/AZYprcUoV7fQDu5TecFw==
@@ -667,15 +654,16 @@
     justypes "^2.0.0"
     lodash "^4.17.21"
 
-"@blackglory/wait-for@^0.4.4":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@blackglory/wait-for/-/wait-for-0.4.4.tgz#fa9f1a7c7741059d89e04690d7cc8208bfc062b5"
-  integrity sha512-gCkX+0WMOt1sv1hXrqZqYrIK0PAZmS7HH8UXZMGRizPUNKfTHv1nM/EOhuET0LyBA6dSBVjLSN9bGlklhkIhSA==
+"@blackglory/wait-for@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@blackglory/wait-for/-/wait-for-0.5.0.tgz#c5d959b912189f92d8d2fcbec593faadf86e9909"
+  integrity sha512-lpIBRTZ/NuxdIIo/latU8v9YDAwJOCYnzq623mr9hKfedU0aC4bpM51Z4qB3a1aE+zypfiHRt0NJBOAbPKTARw==
   dependencies:
     "@blackglory/observe" "^0.1.5"
-    extra-promise "^1.0.0"
+    "@blackglory/structures" "^0.6.0"
+    extra-promise "^2.0.0"
     extra-timers "^0.2.5"
-    iterable-operator "^1.0.0"
+    iterable-operator "^1.1.0"
     rxjs "^7.5.5"
 
 "@commitlint/cli@^17.0.2":
@@ -2418,11 +2406,6 @@ event-target-shim@^5.0.0:
   resolved "https://registry.yarnpkg.com/event-target-shim/-/event-target-shim-5.0.1.tgz#5d4d3ebdf9583d63a5333ce2deb7480ab2b05789"
   integrity sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==
 
-eventemitter3@^4.0.7:
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
-  integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
-
 execa@^5.0.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/execa/-/execa-5.1.1.tgz#f80ad9cbf4298f7bd1d4c9555c21e93741c411dd"
@@ -2478,24 +2461,6 @@ extra-lazy@^1.0.0, extra-lazy@^1.0.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/extra-lazy/-/extra-lazy-1.1.1.tgz#47983311aa339caf985c3b169565024585a44d5f"
   integrity sha512-lkSqIqohXIo0MUByHLCk7EmFbMVrpoIltcBGV5TwZUJASsDgmvPUEruGR0Idp5TZaFwtS8B+ymBIrZpWJtZMhw==
-
-extra-promise@^1.0.0, extra-promise@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/extra-promise/-/extra-promise-1.0.2.tgz#7417d454a03d9e6854e19eb6f44009ca4372b059"
-  integrity sha512-HZEh6aEWsZQ9/KKq2KjCVlsueQ+aVX3PO9z9MxcS2IWrGenMqdQ8PyLOTuEJx6qiVC60uaiYFjoiz90X+OTj6A==
-  dependencies:
-    "@blackglory/errors" "^2.2.1"
-    "@blackglory/go" "^1.0.0"
-    "@blackglory/pass" "^1.0.0"
-    "@blackglory/structures" "^0.3.5"
-    "@blackglory/types" "^1.0.1"
-    eventemitter3 "^4.0.7"
-    extra-generator "^0.2.16"
-    iterable-operator "^1.0.1"
-    justypes "^2.0.0"
-    lodash "^4.17.21"
-    reflect-metadata "^0.1.13"
-    return-style "^1.0.0"
 
 extra-promise@^2.0.0:
   version "2.0.0"
@@ -4413,11 +4378,6 @@ redent@^3.0.0:
   dependencies:
     indent-string "^4.0.0"
     strip-indent "^3.0.0"
-
-reflect-metadata@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
-  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 regexpp@^3.2.0:
   version "3.2.0"
