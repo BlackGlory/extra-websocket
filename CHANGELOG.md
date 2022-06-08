@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/BlackGlory/extra-websocket/compare/v0.2.5...v0.3.0) (2022-06-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* addEventListener, removeEventListener are removed
+
+* use Emitter from @blackglory/structures ([1858862](https://github.com/BlackGlory/extra-websocket/commit/1858862bfa5a0d709dc4a87a8c122da4e12eb479))
+
 ### [0.2.5](https://github.com/BlackGlory/extra-websocket/compare/v0.2.4...v0.2.5) (2022-06-08)
 
 ### [0.2.4](https://github.com/BlackGlory/extra-websocket/compare/v0.2.3...v0.2.4) (2022-06-03)
