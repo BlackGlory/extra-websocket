@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/BlackGlory/extra-websocket/compare/v0.3.2...v0.4.0) (2023-12-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* - The minimal Node.js is v18.17.0
+- Modified the signature of `ExtraWebSocket#send`
+
+* upgrade dependencies ([a59f9b8](https://github.com/BlackGlory/extra-websocket/commit/a59f9b8f67a4423dcb304006fac70defbc5f7484))
+
 ### [0.3.2](https://github.com/BlackGlory/extra-websocket/compare/v0.3.1...v0.3.2) (2023-06-11)
 
 
