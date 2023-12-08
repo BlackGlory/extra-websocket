@@ -1,4 +1,4 @@
-import { ExtraWebSocket, State } from '@src/extra-websocket'
+import { ExtraWebSocket, State } from '@src/extra-websocket.js'
 import { delay } from 'extra-promise'
 import { pass } from '@blackglory/prelude'
 import { AbortController } from 'extra-abort'

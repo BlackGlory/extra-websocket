@@ -39,7 +39,7 @@ class ExtraWebSocket extends Emitter<{
 
   connect(): Promise<void>
   close(code?: number, reason?: string): Promise<void>
-  send(data: unknown): void
+  send(data: string | ArrayBufferLike | Buffer | TypedArray | DataView): void
   ping(): void
 }
 ```

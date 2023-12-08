@@ -1,11 +1,11 @@
-import { WebSocket, Server } from 'ws'
-import { autoReconnectWithExponentialBackOff } from '@utils/auto-reconnect-with-exponential-back-off'
-import { ExtraWebSocket, State } from '@src/extra-websocket'
-import { delay } from 'extra-promise'
+import { WebSocket, WebSocketServer } from 'ws'
+import { autoReconnectWithExponentialBackOff } from '@utils/auto-reconnect-with-exponential-back-off.js'
+import { ExtraWebSocket, State } from '@src/extra-websocket.js'
+import { delay, promisify } from 'extra-promise'
 
 describe('autoReconnectWithExponentialBackOff', () => {
   test('reconnect', async () => {
-    const server = new Server({ port: 8080 })
+    const server = new WebSocketServer({ port: 8080 })
     server.on('connection', socket => {
       socket.on('message', () => socket.close())
     })
@@ -25,12 +25,12 @@ describe('autoReconnectWithExponentialBackOff', () => {
     } finally {
       cancel()
       await ws.close()
-      server.close()
+      await promisify(server.close.bind(server))()
     }
   })
 
   test('timeout', async () => {
-    const server = new Server({ port: 8080 })
+    const server = new WebSocketServer({ port: 8080 })
     server.on('connection', socket => {
       socket.on('message', () => socket.close())
     })
@@ -53,12 +53,12 @@ describe('autoReconnectWithExponentialBackOff', () => {
     } finally {
       cancel()
       await ws.close()
-      server.close()
+      await promisify(server.close.bind(server))()
     }
   })
 
   test('cancel', async () => {
-    const server = new Server({ port: 8080 })
+    const server = new WebSocketServer({ port: 8080 })
     server.on('connection', socket => {
       socket.on('message', () => socket.close())
     })
@@ -79,7 +79,7 @@ describe('autoReconnectWithExponentialBackOff', () => {
     } finally {
       cancel()
       await ws.close()
-      server.close()
+      await promisify(server.close.bind(server))()
     }
   })
 })

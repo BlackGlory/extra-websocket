@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES2018"
-  , "module": "CommonJS"
+  , "module": "NodeNext"
+  , "moduleResolution": "NodeNext"
+  , "esModuleInterop": true
+  , "skipLibCheck": true
   , "strict": true
   , "baseUrl": "."
   , "paths": {
@@ -9,5 +12,9 @@
     , "@utils/*": ["src/utils/*"]
     , "@test/*": ["__tests__/*"]
     }
+  , "plugins": [
+      { "transform": "typescript-transform-paths" }
+    , { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ]
   }
 }

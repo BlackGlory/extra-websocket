@@ -1,3 +1,3 @@
-export * from './auto-reconnect'
-export * from './start-heartbeat'
-export * from './auto-reconnect-with-exponential-back-off'
+export * from './auto-reconnect.js'
+export * from './start-heartbeat.js'
+export * from './auto-reconnect-with-exponential-back-off.js'

@@ -5,7 +5,7 @@ import type {
 , ErrorEvent
 , CloseEvent
 } from 'ws'
-import { assert } from '@blackglory/prelude'
+import { TypedArray, assert } from '@blackglory/prelude'
 import { Queue, Emitter } from '@blackglory/structures'
 
 export enum BinaryType {
@@ -28,6 +28,13 @@ enum ReadyState {
 , CLOSED = 3
 }
 
+type Data =
+| string
+| ArrayBufferLike
+| Buffer
+| TypedArray
+| DataView
+
 export class ExtraWebSocket extends Emitter<{
   open: [event: OpenEvent]
   message: [event: MessageEvent]
@@ -36,7 +43,7 @@ export class ExtraWebSocket extends Emitter<{
 }> {
   private instance?: WebSocket
   private binaryType = BinaryType.NodeBuffer
-  protected unsentMessages = new Queue<unknown>()
+  protected unsentMessages = new Queue<Data>()
 
   constructor(private createWebSocket: () => WebSocket) {
     super()
@@ -105,7 +112,7 @@ export class ExtraWebSocket extends Emitter<{
       function openListener(event: OpenEvent) {
         ws.removeEventListener('error', errorListener)
         for (let size = self.unsentMessages.size; size--;) {
-          self.send(self.unsentMessages.dequeue())
+          self.send(self.unsentMessages.dequeue()!)
         }
         resolve()
       }
@@ -130,7 +137,7 @@ export class ExtraWebSocket extends Emitter<{
     })
   }
 
-  send(data: unknown): void {
+  send(data: Data): void {
     this.unsentMessages.enqueue(data)
 
     if (this.getState() === State.Connected) {

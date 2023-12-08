@@ -1,11 +1,12 @@
-import { WebSocket, Server } from 'ws'
-import { startHeartbeat } from '@utils/start-heartbeat'
-import { ExtraWebSocket } from '@src/extra-websocket'
-import { delay } from 'extra-promise'
+import { jest } from '@jest/globals'
+import { WebSocket, WebSocketServer } from 'ws'
+import { startHeartbeat } from '@utils/start-heartbeat.js'
+import { ExtraWebSocket } from '@src/extra-websocket.js'
+import { delay, promisify } from 'extra-promise'
 
 describe('startHeartbeat', () => {
   test('heartbeat', async () => {
-    const server = new Server({ port: 8080 })
+    const server = new WebSocketServer({ port: 8080 })
     const pingListener = jest.fn()
     server.on('connection', socket => {
       socket.on('ping', pingListener)
@@ -17,16 +18,16 @@ describe('startHeartbeat', () => {
       await ws.connect()
       await delay(1000)
 
-      expect(pingListener).toBeCalled()
+      expect(pingListener).toHaveBeenCalled()
     } finally {
       cancel()
       await ws.close()
-      server.close()
+      await promisify(server.close.bind(server))()
     }
   })
 
   test('interval', async () => {
-    const server = new Server({ port: 8080 })
+    const server = new WebSocketServer({ port: 8080 })
     const pingListener = jest.fn()
     server.on('connection', socket => {
       socket.on('ping', pingListener)
@@ -46,12 +47,12 @@ describe('startHeartbeat', () => {
     } finally {
       cancel()
       await ws.close()
-      server.close()
+      await promisify(server.close.bind(server))()
     }
   })
 
   test('cancel', async () => {
-    const server = new Server({ port: 8080 })
+    const server = new WebSocketServer({ port: 8080 })
     const pingListener = jest.fn()
     server.on('connection', socket => {
       socket.on('ping', pingListener)
@@ -64,11 +65,11 @@ describe('startHeartbeat', () => {
       cancel()
       await delay(1100)
 
-      expect(pingListener).toBeCalledTimes(0)
+      expect(pingListener).toHaveBeenCalledTimes(0)
     } finally {
       cancel()
       await ws.close()
-      server.close()
+      await promisify(server.close.bind(server))()
     }
   })
 })
