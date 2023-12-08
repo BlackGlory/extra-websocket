@@ -7,7 +7,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### ⚠ BREAKING CHANGES
 
-* - The minimal Node.js is v18.17.0
+- CommonJS => ESM
+- The minimal Node.js is v18.17.0
 - Modified the signature of `ExtraWebSocket#send`
 
 * upgrade dependencies ([a59f9b8](https://github.com/BlackGlory/extra-websocket/commit/a59f9b8f67a4423dcb304006fac70defbc5f7484))
