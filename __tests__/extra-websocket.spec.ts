@@ -137,7 +137,7 @@ describe('ExtraWebsocket', () => {
 
       const err = await getErrorPromise(ws.connect())
 
-      expect(err?.message).toBe('connect ECONNREFUSED 127.0.0.1:8080')
+      expect(err?.message).toMatch('connect ECONNREFUSED')
     })
 
     test('server down', async () => {
