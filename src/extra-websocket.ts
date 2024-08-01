@@ -107,7 +107,7 @@ export class ExtraWebSocket extends Emitter<{
 
       ws.addEventListener('open', openListener, { once: true })
 
-      function abortListener() {
+      function abortListener(): void {
         assert(signal)
 
         ws.removeAllListeners('open')
@@ -119,7 +119,7 @@ export class ExtraWebSocket extends Emitter<{
         reject(signal.reason)
       }
 
-      function errorListener(err: ErrorEvent) {
+      function errorListener(err: ErrorEvent): void {
         ws.removeAllListeners('open')
         ws.removeAllListeners('message')
         ws.removeAllListeners('error')
@@ -129,7 +129,7 @@ export class ExtraWebSocket extends Emitter<{
         reject(err.error)
       }
 
-      function openListener(event: OpenEvent) {
+      function openListener(event: OpenEvent): void {
         ws.removeEventListener('error', errorListener)
         signal?.removeEventListener('abort', abortListener)
 
