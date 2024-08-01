@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.2](https://github.com/BlackGlory/extra-websocket/compare/v0.4.1...v0.4.2) (2024-08-01)
+
+
+### Bug Fixes
+
+* close ([20639fd](https://github.com/BlackGlory/extra-websocket/commit/20639fd872b2f94ac4e6f8ce358a02eefda1c21a))
+
 ### [0.4.1](https://github.com/BlackGlory/extra-websocket/compare/v0.4.0...v0.4.1) (2024-08-01)
 
 
