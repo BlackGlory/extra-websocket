@@ -86,13 +86,16 @@ export class ExtraWebSocket extends Emitter<{
     }
   }
 
-  connect(): Promise<void> {
+  connect(signal?: AbortSignal): Promise<void> {
     return new Promise<void>((resolve, reject) => {
+      signal?.throwIfAborted()
       assert(this.getState() === State.Closed, 'WebSocket is not closed')
 
       const self = this
-      const ws = this.instance = this.createWebSocket()
+      const ws = this.createWebSocket()
+      this.instance = ws
 
+      signal?.addEventListener('abort', abortListener, { once: true })
       ws.addEventListener('error', errorListener, { once: true })
 
       ws.addEventListener('open', event => this.emit('open', event))
@@ -104,13 +107,25 @@ export class ExtraWebSocket extends Emitter<{
 
       ws.addEventListener('open', openListener, { once: true })
 
+      function abortListener() {
+        assert(signal)
+
+        ws.removeEventListener('open', openListener)
+
+        reject(signal.reason)
+      }
+
       function errorListener(err: ErrorEvent) {
         ws.removeEventListener('open', openListener)
+        signal?.removeEventListener('abort', abortListener)
+
         reject(err.error)
       }
 
       function openListener(event: OpenEvent) {
         ws.removeEventListener('error', errorListener)
+        signal?.removeEventListener('abort', abortListener)
+
         for (let size = self.unsentMessages.size; size--;) {
           self.send(self.unsentMessages.dequeue()!)
         }

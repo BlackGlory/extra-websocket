@@ -37,7 +37,7 @@ class ExtraWebSocket extends Emitter<{
   getBinaryType(): BinaryType
   setBinaryType(val: BinaryType): void
 
-  connect(): Promise<void>
+  connect(signal?: AbortSignal): Promise<void>
   close(code?: number, reason?: string): Promise<void>
   send(data: string | ArrayBufferLike | Buffer | TypedArray | DataView): void
   ping(): void
@@ -46,7 +46,11 @@ class ExtraWebSocket extends Emitter<{
 
 ### autoReconnect
 ```ts
-function autoReconnect(ws: ExtraWebSocket, timeout?: number): () => void
+function autoReconnect(
+  ws: ExtraWebSocket
+, reconnectTimeout: number = 0
+, connectTimeout?: number
+): () => void
 ```
 
 ### autoReconnectWithExponentialBackOff
@@ -55,9 +59,10 @@ function autoReonnectWithExponentialBackOff(
   ws: ExtraWebSocket
 , options: {
     baseTimeout: number
-    maxTimeout?: number
+    maxTimeout?: number = Infinity
     factor?: number = 2
     jitter?: boolean = true
+    connectTimeout?: number
   }
 ): () => void
 ```
