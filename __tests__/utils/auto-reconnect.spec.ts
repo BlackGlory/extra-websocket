@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest'
 import { WebSocket, WebSocketServer } from 'ws'
 import { autoReconnect } from '@utils/auto-reconnect.js'
 import { ExtraWebSocket, State } from '@src/extra-websocket.js'

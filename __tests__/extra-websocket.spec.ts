@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals'
+import { describe, test, expect, vi } from 'vitest'
 import { ExtraWebSocket, State } from '@src/extra-websocket.js'
 import { WebSocket, MessageEvent, WebSocketServer } from 'ws'
 import { delay, promisify } from 'extra-promise'
@@ -40,7 +40,7 @@ describe('ExtraWebsocket', () => {
         }
       }
       const server = new WebSocketServer({ port: 8080 })
-      const messageListener = jest.fn()
+      const messageListener = vi.fn()
       server.on('connection', socket => {
         socket.addEventListener('message', event => messageListener(event.data))
       })
@@ -65,7 +65,7 @@ describe('ExtraWebsocket', () => {
 
     test('connected', async () => {
       const server = new WebSocketServer({ port: 8080 })
-      const messageListener = jest.fn()
+      const messageListener = vi.fn()
       server.on('connection', socket => {
         socket.addEventListener('message', event => messageListener(event.data))
       })
@@ -115,7 +115,7 @@ describe('ExtraWebsocket', () => {
 
       const ws = new ExtraWebSocket(() => new WebSocket('ws://localhost:8080'))
       try {
-        const messageListener = jest.fn()
+        const messageListener = vi.fn()
         ws.on('message', messageListener)
         await ws.connect()
 

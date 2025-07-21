@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest'
 import { WebSocket, WebSocketServer } from 'ws'
 import { autoReconnectWithExponentialBackOff } from '@utils/auto-reconnect-with-exponential-back-off.js'
 import { ExtraWebSocket, State } from '@src/extra-websocket.js'

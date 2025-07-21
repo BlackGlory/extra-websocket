@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals'
+import { describe, test, expect, vi } from 'vitest'
 import { WebSocket, WebSocketServer } from 'ws'
 import { startHeartbeat } from '@utils/start-heartbeat.js'
 import { ExtraWebSocket } from '@src/extra-websocket.js'
@@ -7,7 +7,7 @@ import { delay, promisify } from 'extra-promise'
 describe('startHeartbeat', () => {
   test('heartbeat', async () => {
     const server = new WebSocketServer({ port: 8080 })
-    const pingListener = jest.fn()
+    const pingListener = vi.fn()
     server.on('connection', socket => {
       socket.on('ping', pingListener)
     })
@@ -28,7 +28,7 @@ describe('startHeartbeat', () => {
 
   test('interval', async () => {
     const server = new WebSocketServer({ port: 8080 })
-    const pingListener = jest.fn()
+    const pingListener = vi.fn()
     server.on('connection', socket => {
       socket.on('ping', pingListener)
     })
@@ -53,7 +53,7 @@ describe('startHeartbeat', () => {
 
   test('cancel', async () => {
     const server = new WebSocketServer({ port: 8080 })
-    const pingListener = jest.fn()
+    const pingListener = vi.fn()
     server.on('connection', socket => {
       socket.on('ping', pingListener)
     })
