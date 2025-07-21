@@ -48,7 +48,7 @@ class ExtraWebSocket extends Emitter<{
 ```ts
 function autoReconnect(
   ws: ExtraWebSocket
-, reconnectTimeout: number = 0
+, reconnectInterval: number = 0
 , connectTimeout?: number
 ): () => void
 ```

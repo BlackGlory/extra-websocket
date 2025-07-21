@@ -6,7 +6,7 @@ import { waitForFunction } from '@blackglory/wait-for'
 
 export function autoReconnect(
   ws: ExtraWebSocket
-, reconnectTimeout: number = 0
+, reconnectInterval: number = 0
 , connectTimeout?: number
 ): () => void {
   const controller = new AbortController()
@@ -24,7 +24,7 @@ export function autoReconnect(
     while (true) {
       if (controller.signal.aborted) return
 
-      await delay(reconnectTimeout)
+      await delay(reconnectInterval)
       if (controller.signal.aborted) return
 
       try {
