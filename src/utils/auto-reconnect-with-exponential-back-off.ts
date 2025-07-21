@@ -8,18 +8,17 @@ import { AbortController, timeoutSignal } from 'extra-abort'
 export function autoReconnectWithExponentialBackOff(
   ws: ExtraWebSocket
 , {
-    baseTimeout
-  , maxTimeout = Infinity
+    baseInterval
+  , maxInterval = Infinity
   , factor = 2
   , jitter = true
-  , connectTimeout
   }: {
-    baseTimeout: number
-    maxTimeout?: number
+    baseInterval: number
+    maxInterval?: number
     factor?: number
     jitter?: boolean
-    connectTimeout?: number
   }
+, connectTimeout?: number
 ): () => void {
   const controller = new AbortController()
 
@@ -39,8 +38,8 @@ export function autoReconnectWithExponentialBackOff(
 
       await delay(calculateExponentialBackoffTimeout({
         retries
-      , baseTimeout
-      , maxTimeout
+      , baseTimeout: baseInterval
+      , maxTimeout: maxInterval
       , factor
       , jitter
       }))
