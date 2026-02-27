@@ -1,7 +1,7 @@
 import { ExtraWebSocket, State } from '@src/extra-websocket.js'
 import { delay } from 'extra-promise'
 import { pass } from '@blackglory/prelude'
-import { AbortController, timeoutSignal } from 'extra-abort'
+import { AbortController, timeoutSignal, raceAbortSignals } from 'extra-abort'
 import { waitForFunction } from '@blackglory/wait-for'
 
 export function autoReconnect(
@@ -13,14 +13,16 @@ export function autoReconnect(
 
   // Make sure the error listener is added, prevent crashes due to uncaught errors.
   const removeErrorListener = ws.on('error', pass)
-  let removeCloseListener = ws.once('close', listener)
+  let removeCloseListener = ws.once('close', closeListener)
+
   return () => {
     controller.abort()
+
     removeCloseListener()
     removeErrorListener()
   }
 
-  async function listener(): Promise<void> {
+  async function closeListener(): Promise<void> {
     while (true) {
       if (controller.signal.aborted) return
 
@@ -30,13 +32,15 @@ export function autoReconnect(
       try {
         await waitForFunction(() => ws.getState() === State.Closed)
         await ws.connect(
-          connectTimeout
-        ? timeoutSignal(connectTimeout)
-        : undefined
+          raceAbortSignals([
+            connectTimeout && timeoutSignal(connectTimeout)
+          , controller.signal
+          ])
         )
-        if (controller.signal.aborted) return
 
-        removeCloseListener = ws.once('close', listener)
+        removeCloseListener()
+        removeCloseListener = ws.once('close', closeListener)
+
         break
       } catch {
         pass()
