@@ -58,6 +58,7 @@
     "@blackglory/prelude": "^0.4.0",
     "@blackglory/structures": "^0.14.10",
     "@blackglory/wait-for": "^0.8.1",
+    "assert-never": "^1.4.0",
     "extra-abort": "^0.4.0",
     "extra-promise": "^7.0.0",
     "extra-timers": "^0.2.6"

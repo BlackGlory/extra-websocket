@@ -7,6 +7,7 @@ import type {
 } from 'ws'
 import { TypedArray, assert } from '@blackglory/prelude'
 import { Queue, Emitter } from '@blackglory/structures'
+import { assertNever } from 'assert-never'
 
 export enum BinaryType {
   NodeBuffer
@@ -52,11 +53,11 @@ export class ExtraWebSocket extends Emitter<{
   getState(): State {
     if (this.instance) {
       switch (this.instance.readyState) {
-        case ReadyState.CONNECTING: return State.Connecting
-        case ReadyState.OPEN: return State.Connected
-        case ReadyState.CLOSING: return State.Closing
-        case ReadyState.CLOSED: return State.Closed
-        default: throw new Error('Unknown state')
+        case ReadyState.CONNECTING: case 0: return State.Connecting
+        case ReadyState.OPEN: case 1: return State.Connected
+        case ReadyState.CLOSING: case 2: return State.Closing
+        case ReadyState.CLOSED: case 3: return State.Closed
+        default: assertNever(this.instance.readyState, 'Unknown state')
       }
     } else {
       return State.Closed
@@ -72,16 +73,22 @@ export class ExtraWebSocket extends Emitter<{
 
     if (this.instance) {
       switch (val) {
-        case BinaryType.NodeBuffer:
+        case BinaryType.NodeBuffer: {
           this.instance.binaryType = 'nodebuffer'
+
           break
-        case BinaryType.ArrayBuffer:
+        }
+        case BinaryType.ArrayBuffer: {
           this.instance.binaryType = 'arraybuffer'
+
           break
-        case BinaryType.Fragments:
+        }
+        case BinaryType.Fragments: {
           this.instance.binaryType = 'fragments'
+
           break
-        default: throw new Error('Unknown binary type')
+        }
+        default: assertNever(val, 'Unknown binary type')
       }
     }
   }
