@@ -153,15 +153,20 @@ export class ExtraWebSocket extends Emitter<{
       assert(this.instance, 'WebSocket is not created')
 
       switch (this.getState()) {
-        case State.Closed:
+        case State.Closed: {
           resolve()
+
           break
-        case State.Closing:
+        }
+        case State.Closing: {
           this.instance.addEventListener('close', () => resolve(), { once: true })
+
           break
-        default:
+        }
+        default: {
           this.instance.addEventListener('close', () => resolve(), { once: true })
           this.instance.close(code, reason)
+        }
       }
     })
   }
