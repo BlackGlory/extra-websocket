@@ -158,7 +158,7 @@ export class ExtraWebSocket extends Emitter<{
       const self = this
 
       const ws = this.instance
-      assert(ws, 'WebSocket is not created')
+      if (!ws) return resolve()
 
       switch (this.getState()) {
         case State.Closed: {
