@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.3](https://github.com/BlackGlory/extra-websocket/compare/v0.5.2...v0.5.3) (2026-05-24)
+
+
+### Bug Fixes
+
+* **close:** do nothing if the instance does not exist ([09ccfb5](https://github.com/BlackGlory/extra-websocket/commit/09ccfb5ae1126c06501ddf40ee7d97a051e42691))
+
 ### [0.5.2](https://github.com/BlackGlory/extra-websocket/compare/v0.5.1...v0.5.2) (2026-05-24)
 
 
