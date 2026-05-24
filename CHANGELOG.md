@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.2](https://github.com/BlackGlory/extra-websocket/compare/v0.5.1...v0.5.2) (2026-05-24)
+
+
+### Features
+
+* remove the instance after an abort, error or close event ([30fe16a](https://github.com/BlackGlory/extra-websocket/commit/30fe16af37aedf8f8384ff1916962d50ad84769d))
+
 ### [0.5.1](https://github.com/BlackGlory/extra-websocket/compare/v0.5.0...v0.5.1) (2026-02-27)
 
 
