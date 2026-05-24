@@ -123,6 +123,8 @@ export class ExtraWebSocket extends Emitter<{
         ws.removeAllListeners('close')
         ws.close()
 
+        if (self.instance === ws) self.instance = undefined
+
         reject(signal.reason)
       }
 
@@ -132,6 +134,8 @@ export class ExtraWebSocket extends Emitter<{
         ws.removeAllListeners('error')
         ws.removeAllListeners('close')
         signal?.removeEventListener('abort', abortListener)
+
+        if (self.instance === ws) self.instance = undefined
 
         reject(err.error)
       }
@@ -143,6 +147,7 @@ export class ExtraWebSocket extends Emitter<{
         for (let size = self.unsentMessages.size; size--;) {
           self.send(self.unsentMessages.dequeue()!)
         }
+
         resolve()
       }
     })
@@ -150,7 +155,10 @@ export class ExtraWebSocket extends Emitter<{
 
   close(code?: number, reason?: string): Promise<void> {
     return new Promise(resolve => {
-      assert(this.instance, 'WebSocket is not created')
+      const self = this
+
+      const ws = this.instance
+      assert(ws, 'WebSocket is not created')
 
       switch (this.getState()) {
         case State.Closed: {
@@ -159,14 +167,20 @@ export class ExtraWebSocket extends Emitter<{
           break
         }
         case State.Closing: {
-          this.instance.addEventListener('close', () => resolve(), { once: true })
+          ws.addEventListener('close', closeListener, { once: true })
 
           break
         }
         default: {
-          this.instance.addEventListener('close', () => resolve(), { once: true })
-          this.instance.close(code, reason)
+          ws.addEventListener('close', closeListener, { once: true })
+          ws.close(code, reason)
         }
+      }
+
+      function closeListener(): void {
+        if (self.instance === ws) self.instance = undefined
+
+        resolve()
       }
     })
   }
