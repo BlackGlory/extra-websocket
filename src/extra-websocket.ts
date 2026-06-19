@@ -144,8 +144,9 @@ export class ExtraWebSocket extends Emitter<{
         ws.removeEventListener('error', errorListener)
         signal?.removeEventListener('abort', abortListener)
 
-        for (let size = self.unsentMessages.size; size--;) {
-          self.send(self.unsentMessages.dequeue()!)
+        while (self.unsentMessages.size) {
+          const message = self.unsentMessages.dequeue()!
+          self.send(message)
         }
 
         resolve()
@@ -186,10 +187,14 @@ export class ExtraWebSocket extends Emitter<{
   }
 
   send(data: Data): void {
-    this.unsentMessages.enqueue(data)
-
     if (this.getState() === State.Connected) {
-      this.instance!.send(data, () => this.unsentMessages.dequeue())
+      assert(this.instance, 'WebSocket is not created')
+
+      this.instance.send(data, err => {
+        if (err) this.unsentMessages.enqueue(data)
+      })
+    } else {
+      this.unsentMessages.enqueue(data)
     }
   }
 
